@@ -1,0 +1,89 @@
+
+<html>
+<head>
+<script src="https://npmcdn.com/vue/dist/vue.js"></script>
+<link rel="stylesheet" type="text/css" href="styles.css">
+
+</head>
+<body>
+    <div id="exercise">
+        <!-- 1) Start the Effect with the Button. The Effect should alternate the "highlight" or "shrink" class on each new setInterval tick (attach respective class to the div with id "effect" below) -->
+        <div>
+          <button @click="startEffect">Start Effect</button>
+          <div id="effect" :class="effect"></div>
+        </div>
+        <!-- 2) Create a couple of CSS classes and attach them via the array syntax -->
+        <div :class="['default', 'success']">I got no class :(</div>
+        <!-- 3) Let the user enter a class (create some example classes) and attach it -->
+        <div>
+          <input type="text" v-model='myClass'>
+          <div :class="myClass"></div>
+        </div>
+        <!-- 4) Let the user enter a class and enter true/ false for another class (create some example classes) and attach the classes -->
+        <div>
+          <input type="text" v-model="myAttachedClass">
+          <input type="text" v-model="attachClassText">
+          <div :class="[myClass,{green:canAttachClass}]"></div>
+        </div>
+        <!-- 5) Repeat 3) but now with values for styles (instead of class names). Attach the respective styles.  -->
+        <div>
+          <input type="text" v-model='width'>
+          <div :style="{ backgroundColor: myClass,width: width , height:width}"></div>
+        </div>
+        <!-- 6) Create a simple progress bar with setInterval and style bindings. Start it by hitting the below button. -->
+        <div>
+          <button @click="startProgress">Start Progress</button>
+          <div :style="{textAlign:'center',color: 'white', backgroundColor: 'blue',width: progressWidth , height:25}">{{percentage}} %</div>
+        </div>
+      </div>
+      <script>
+          new Vue({
+              el:'#exercise',
+              data:{
+                  effect: '',
+                  isHighlight: false,
+                  myClass:'red',
+                  myAttachedClass:'red',
+                  attachClassText:'',
+                  width:10,
+                  canAttachClass:false,
+                  progressWidth:0,
+                  progressIntervalID:0,
+                  percentage:0
+              },
+              watch:{
+                attachClassText:function(value){
+                  this.canAttachClass = value =='true'
+                  },
+                  progressWidth: function(value){
+                    if(value === 500)
+                    clearInterval(this.progressIntervalID); 
+                  }
+              },
+              methods:{
+                startEffect: function()
+                {
+                  var vm = this;
+                 setInterval(function(){
+                    vm.isHighlight = !vm.isHighlight; 
+                    vm.effect = vm.isHighlight ? 'highlight': 'shrink';
+                  }, 2000);
+
+                },
+                startProgress:function()
+                {
+                  var vm = this;
+                  vm.progressIntervalID = setInterval(function(){
+                    vm.progressWidth += 10;
+                    vm.percentage =  parseInt(vm.progressWidth / 500 *100, 10);;
+                  }, 1000);
+                }
+              }
+            
+      
+          });
+          </script>
+</body>
+</html>
+
+

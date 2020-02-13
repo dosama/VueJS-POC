@@ -1,0 +1,26 @@
+<html>
+    <head>
+<title>Vue.js</title>
+<script src="vue.js"></script>
+    </head>
+    <body>
+        <div id="app">
+            <input type="text" v-on:input="textChanged" />
+            <p>{{title}}</p>
+        </div>
+        <script>
+        new Vue({
+            el:"#app",
+            data:{
+                title: "Hello World"
+            },
+            methods:{
+                textChanged:function(event){
+                    this.title=event.target.value;
+                }
+            }
+
+        });
+        </script>
+    </body>
+</html>
